@@ -131,17 +131,17 @@
 ++하지만 구문분석 할 비슷한 형식의 날짜 문자열이 많은 경우, :class:`Date.DateFormat`` 형식을 먼저 생성한 후 초기의 형식 문자열을 대신 전달하는 것이 훨씬 더 효율적이다.
 --One note on parsing performance: using the ``Date(date_string,format_string)`` function is fine if only called a few times.
 --If there are many similarly formatted date strings to parse however, it is much more efficient to first create a :class:`Dates.DateFormat`, and pass it instead of a raw format string.
-
-::
-
-  julia> df = Dates.DateFormat("y-m-d");
-
-  julia> dt = Date("2015-01-01",df)
-  2015-01-01
-
-  julia> dt2 = Date("2015-01-02",df)
-  2015-01-02
-
+==
+==::
+==
+==  julia> df = Dates.DateFormat("y-m-d");
+==
+==  julia> dt = Date("2015-01-01",df)
+==  2015-01-01
+==
+==  julia> dt2 = Date("2015-01-02",df)
+==  2015-01-02
+==
 ++dateformat"" 문자열 매크로를 사용할 수 있습니다.
 ++이 매크로는 확장될 때 DateFormat객체가 확장될 때 한번 생성하고, 여러 번 실행될 때에도 같은 DateFormat객체를 사용합니다.
 --You can also use the dateformat"" string macro.
@@ -154,63 +154,69 @@
 ==
 ++구문분석과 지정된 테스트 및 예제 전체들을 `test/dates/io.jl <https://github.com/JuliaLang/julia/blob/master/test/dates/io.jl>`_ 에서 사용할 수 있습니다.
 --A full suite of parsing and formatting tests and examples is available in `tests/dates/io.jl <https://github.com/JuliaLang/julia/blob/master/test/dates/io.jl>`_.
-
-Durations/Comparisons
----------------------
-
-Finding the length of time between two :class:`Date` or :class:`DateTime` is straightforward given their underlying representation as ``UTInstant{Day}`` and ``UTInstant{Millisecond}``, respectively. The difference between :class:`Date` is returned in the number of :class:`Day`, and :class:`DateTime` in the number of :class:`Millisecond`. Similarly, comparing :class:`TimeType` is a simple matter of comparing the underlying machine instants (which in turn compares the internal ``Int64`` values).
-
-::
-
-  julia> dt = Date(2012,2,29)
-  2012-02-29
-
-  julia> dt2 = Date(2000,2,1)
-  2000-02-01
-
-  julia> dump(dt)
-  Date
-    instant: UTInstant{Day}
-      periods: Day
-        value: Int64 734562
-
-  julia> dump(dt2)
-  Date
-  instant: UTInstant{Day}
-    periods: Day
-      value: Int64 730151
-
-  julia> dt > dt2
-  true
-
-  julia> dt != dt2
-  true
-
-  julia> dt + dt2
-  Operation not defined for TimeTypes
-
-  julia> dt * dt2
-  Operation not defined for TimeTypes
-
-  julia> dt / dt2
-  Operation not defined for TimeTypes
-
-  julia> dt - dt2
-  4411 days
-
-  julia> dt2 - dt
-  -4411 days
-
-  julia> dt = DateTime(2012,2,29)
-  2012-02-29T00:00:00
-
-  julia> dt2 = DateTime(2000,2,1)
-  2000-02-01T00:00:00
-
-  julia> dt - dt2
-  381110402000 milliseconds
-
-
+==
+++기간/비교
+--Durations/Comparisons
+==---------------------
+==
+++:class:`Date` 또는 :class:`DateTime` 사이 간격을 찾는 것은 각각 ``UTInstant{Day}`` 와 ``UTInstant{Millisecond}`` 같은 기본 표현을 사용하면 간단합니다.
+++:class:`Date` 는 :class:`Day` 의 수로 반환되고, :class:`DateTime` 은 ``Millisecond`` 로 반환되는 차이가 있습니다.
+++마찬가지로, :class:`TimeType` 을 비교하는 것은 기본 컴퓨터 인스턴트(차례대로 내부 ``Int64`` 값을 비교하는 것)를 비교하는 간단한 문제입니다.
+--Finding the length of time between two :class:`Date` or :class:`DateTime` is straightforward given their underlying representation as ``UTInstant{Day}`` and ``UTInstant{Millisecond}``, respectively.
+--The difference between :class:`Date` is returned in the number of :class:`Day`, and :class:`DateTime` in the number of :class:`Millisecond`.
+--Similarly, comparing :class:`TimeType` is a simple matter of comparing the underlying machine instants (which in turn compares the internal ``Int64`` values).
+==
+==::
+==
+==  julia> dt = Date(2012,2,29)
+==  2012-02-29
+==
+==  julia> dt2 = Date(2000,2,1)
+==  2000-02-01
+==
+==  julia> dump(dt)
+==  Date
+==    instant: UTInstant{Day}
+==      periods: Day
+==        value: Int64 734562
+==
+==  julia> dump(dt2)
+==  Date
+==  instant: UTInstant{Day}
+==    periods: Day
+==      value: Int64 730151
+==
+==  julia> dt > dt2
+==  true
+==
+==  julia> dt != dt2
+==  true
+==
+==  julia> dt + dt2
+==  Operation not defined for TimeTypes
+==
+==  julia> dt * dt2
+==  Operation not defined for TimeTypes
+==
+==  julia> dt / dt2
+==  Operation not defined for TimeTypes
+==
+==  julia> dt - dt2
+==  4411 days
+==
+==  julia> dt2 - dt
+==  -4411 days
+==
+==  julia> dt = DateTime(2012,2,29)
+==  2012-02-29T00:00:00
+==
+==  julia> dt2 = DateTime(2000,2,1)
+==  2000-02-01T00:00:00
+==
+==  julia> dt - dt2
+==  381110402000 milliseconds
+==
+==
 Accessor Functions
 ------------------
 
